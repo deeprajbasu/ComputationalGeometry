@@ -1,3 +1,18 @@
-# ComputationalGeometry
+## ComputationalGeometry
 
-# ComputationalGeometry concepts exploring in unity
+> ComputationalGeometry concepts exploring in unity
+
+## 1 RayCasting
+<p align="left">  
+g
+using ray casting to detect colisions 
+
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/raycast/screen2.PNG" width="22%" align='left'>
+
+ray turns green when hit another object 
+
+
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/raycast/rayHitPlace.gif" width="22%" align='left'>
+
+casting rays from camera to mouse pointer  and placing an object at the collision location
+</p>
