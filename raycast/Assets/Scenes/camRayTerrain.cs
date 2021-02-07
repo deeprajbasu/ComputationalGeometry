@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class camRayTerrain : MonoBehaviour
 {
+    // object to be placed and camera to raycast from 
     public Transform placed;
     public Camera cam;
 
@@ -17,12 +18,14 @@ public class camRayTerrain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            //create a ray from camera to mouse position
+        //create a ray from camera towards mouse pointer position
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit h; 
 
-        if (Physics.Raycast(ray,out h)){
-            // if ray hits anything draw greenline 
+        RaycastHit h; //will detect if ray hit something
+
+        if (Physics.Raycast(ray,out h)){//if ray cast from camera hits something, 
+        
+            // change position of selected object to point where the ray hit 
             placed.position=h.point;
         }
     
