@@ -16,6 +16,7 @@ public class ray : MonoBehaviour
         Ray ray = new Ray(transform.position,transform.forward);
         //create a ray going from object position to forward direction
         RaycastHit h; 
+        h.collider
         //RayCast Hit detector
 
         if (Physics.Raycast(ray,out h,100)){
