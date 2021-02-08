@@ -17,3 +17,9 @@ ray turns green when hit another object
 <p>
 casting rays from camera towards mouse pointer  and placing an object at the collision location
 </p>
+
+## 2 Field  of view- 
+<p>
+using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. 
+</p>
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif.gif" width="100%" align='left'>
