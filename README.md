@@ -15,5 +15,5 @@ ray turns green when hit another object
 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/raycast/rayHitPlace.gif" width="100%" align='left'>
 <p>
-casting rays from camera to mouse pointer  and placing an object at the collision location
+casting rays from camera towards mouse pointer  and placing an object at the collision location
 </p>
