@@ -67,7 +67,7 @@ public class FOV : MonoBehaviour {
 		int numrays =Mathf.RoundToInt(viewAngle*meshRes) ;// round to whole number 
 		float raystepSize = viewAngle/numrays;//angle stepsize for subsequent rays. 
 
-		list<Vector3> viewPoints = new list<Vector3>();//store visible points after view region raycasting 
+		// list<Vector3> viewPoints = new list<Vector3>();//store visible points after view region raycasting 
 
 		//cast view rays in the view region and get their info
 		for(int i =0; i <= numrays;i++){//for every ray in the view region
@@ -79,9 +79,10 @@ public class FOV : MonoBehaviour {
 			float angle = transform.eulerAngles.y - viewAngle/2 + (raystepSize*i) ;
 			//figure out ray angle for ith ray
 			
-			viewRayInfo viewRay = new viewCast(angle);//cast and capture ith ray info
-			viewPoints.Add(viewRay.point);//add end point of ray to list of view points.
-
+			viewRayInfo viewRay = viewCast(angle);//cast and capture ith ray info
+			// viewPoints.Add(viewRay.point);//add end point of ray to list of view points.
+			Debug.DrawLine (transform.position,viewRay.point);//draw line from player to where view ray hits 
+			//either an obstacle or edge of view radius
 
 		}
 		//once we have the view points in the view region 
@@ -91,7 +92,7 @@ public class FOV : MonoBehaviour {
 
 	}
 	viewRayInfo viewCast(float angl){  //casts rays in the view region
-		Vector3 dir = direction(angl);
+		Vector3 dir = direction(angl,true);
 		// get direction of ray to be cast
 
 		RaycastHit hit; //if ray hit something
@@ -99,7 +100,7 @@ public class FOV : MonoBehaviour {
 			//if ray cast from position till view radius in view region hits any wall 
 			//return ray info as our custom datastructure
 			
-			return new viewRayInfo(true,hit.point,hit.distance,angle);
+			return new viewRayInfo(true,hit.point,hit.distance,angl);
 			
 		}else{
 			return new viewRayInfo(false, transform.position + dir * viewRadius, viewRadius, angl);

@@ -23,3 +23,6 @@ casting rays from camera towards mouse pointer  and placing an object at the col
 using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. 
 </p>
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="60%" align='left'>
+
+### --
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="60%" align='right'>

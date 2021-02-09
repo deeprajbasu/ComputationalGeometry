@@ -25,6 +25,8 @@ public class FOVEditor : Editor {
 
 		Handles.color = Color.red;
 		foreach (Transform visibleTarget in fow.visibleTargets) {
+
+			//DrawBezier for a thicker line for when target is in sight
 			Handles.DrawBezier(fow.transform.position,visibleTarget.position,fow.transform.position,visibleTarget.position,
 								 Color.red,null,25);//draw sight line from player to visible targets
 
