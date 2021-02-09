@@ -12,12 +12,17 @@ public class FOV : MonoBehaviour {
 	public LayerMask targetMask;//get targets from layers
 	public LayerMask obstacleMask;//get wall objects from layer
 
+	public float meshRes;//for drawing field of view viualization 
+
 	[HideInInspector]
 	public List<Transform> visibleTargets = new List<Transform>();//list to strore targets that are currently visible
 
 	void Start() {
         //we start finding targets after a slight delay
 		StartCoroutine ("FindTargetsWithDelay", .2f);
+	}
+	void Update() {
+		drawFOVregion();//highlights the entire region of field of view
 	}
 
 
@@ -57,8 +62,23 @@ public class FOV : MonoBehaviour {
 		}
 	}
 
+	void drawFOVregion(){
+		//cast rays to highlight entire FOV region
+		int numrays =Mathf.RoundToInt(viewAngle*meshRes) ;// round to whole number 
+		float raystepSize = viewAngle/numrays;//angle stepsize for subsequent rays. 
+		
+		for(int i =0; i <= numrays;i++){
+			float angle = transform.eulerAngles.y - viewAngle/2+raystepSize*i;
+			Debug.DrawLine(transform.position,transform.position+direction(angle,true)*viewRadius,Color.green);
 
+		}
+
+
+
+	}
 	public Vector3 direction(float angleInDegrees, bool angleIsGlobal) {
+		//output direction vector from view angle degrees
+		//used for on screen visualization 
 		if (!angleIsGlobal) {
 			angleInDegrees += transform.eulerAngles.y;
 		}

@@ -446,13 +446,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 5.81
-  viewAngle: 148.79
+  viewAngle: 66
   targetMask:
     serializedVersion: 2
     m_Bits: 512
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  meshRes: 1
   visibleTargets: []
 --- !u!1 &498936620
 GameObject:
