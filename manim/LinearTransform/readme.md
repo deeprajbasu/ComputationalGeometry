@@ -1,5 +1,5 @@
 
-# Using Manim Library to visualize linear algebra etc.
+# learning Manim Library to visualize linear algebra etc.
 
 
 first output
