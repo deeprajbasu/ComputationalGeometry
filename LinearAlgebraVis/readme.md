@@ -1,9 +1,8 @@
-projecting onto vecetor using dotproduct. 
+# projecting onto vecetor using dotproduct. 
 ![projection](https://user-images.githubusercontent.com/20060207/126078546-3e003a42-a6e2-49c1-b580-c96d42ed9b80.png)
 
 
 
-# learning Manim Library to visualize linear algebra etc.
 
 
 first output
