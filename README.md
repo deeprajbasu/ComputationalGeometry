@@ -3,6 +3,14 @@
 > ComputationalGeometry concepts exploring in unity
 
 
+## 2 Field  of view- 
+<p>
+using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. 
+</p>
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="50%"align='center'>
+
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="60%" align='center'>
+
 
 ## 1 RayCasting
 
@@ -18,10 +26,9 @@ ray turns green when hit another object
 casting rays from camera towards mouse pointer  and placing an object at the collision location
 </p>
 
-## 2 Field  of view- 
-<p>
-using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. 
-</p>
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="50%"align='center'>
 
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="60%" align='center'>
+
+## Fundamentals of linear algebra
+
+### projecting onto vecetor using dotproduct. 
+![projection](https://user-images.githubusercontent.com/20060207/126078546-3e003a42-a6e2-49c1-b580-c96d42ed9b80.png)
