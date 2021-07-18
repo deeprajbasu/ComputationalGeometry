@@ -32,3 +32,7 @@ casting rays from camera towards mouse pointer  and placing an object at the col
 
 ### projecting onto vecetor using dotproduct. 
 ![projection](https://user-images.githubusercontent.com/20060207/126078546-3e003a42-a6e2-49c1-b580-c96d42ed9b80.png)
+
+
+### visualising isomorphic linear transform and matrix trepresentation along with change of basis
+https://user-images.githubusercontent.com/20060207/125037428-c098ba80-e0b1-11eb-97be-f3b8dfef55c4.mp4
