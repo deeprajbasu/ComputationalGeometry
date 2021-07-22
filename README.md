@@ -2,15 +2,15 @@
 
 > ComputationalGeometry concepts exploring in unity
 
-
-## 2 Field  of view- 
 <p>
-using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. 
+## 2 Field  of view- 
+
+using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. </p>
 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="29%"align='left'>
 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="66%" align='right'>
-</p>
+
 
 ## 1 RayCasting
 
