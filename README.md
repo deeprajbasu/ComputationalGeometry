@@ -36,3 +36,13 @@ casting rays from camera towards mouse pointer  and placing an object at the col
 
 ### visualising isomorphic linear transform and matrix trepresentation along with change of basis
 https://user-images.githubusercontent.com/20060207/125037428-c098ba80-e0b1-11eb-97be-f3b8dfef55c4.mp4
+
+
+
+##Surfaces
+
+using manim to visualise surface,
+
+Uploading strange surface.mp4…
+
+
