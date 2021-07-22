@@ -43,6 +43,4 @@ https://user-images.githubusercontent.com/20060207/125037428-c098ba80-e0b1-11eb-
 
 using manim to visualise surface,
 
-Uploading strange surface.mp4…
-
 
