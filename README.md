@@ -22,7 +22,7 @@ using ray casting to detect colisions
 ray turns green when hit another object 
 
 
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/raycast/rayHitPlace.gif" width="100%">
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/raycast/rayHitPlace.gif" width="60%" align='center'>
 <p>
 casting rays from camera towards mouse pointer  and placing an object at the collision location
 </p>
