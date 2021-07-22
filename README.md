@@ -7,7 +7,7 @@
 
 using ray cast to determing if target objects fall in an agents field of view. view angle, view distance
 
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="29%"align='left'>
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="29%" align='left'>
 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="50%" align='right'>
 
