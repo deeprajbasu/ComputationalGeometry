@@ -4,8 +4,8 @@
 
 
 ## 2 Field  of view- 
-<p>
-using ray cast to determing if target objects fall in an agents field of view. view angle, view distance. </p>
+
+using ray cast to determing if target objects fall in an agents field of view. view angle, view distance
 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="29%"align='left'>
 
