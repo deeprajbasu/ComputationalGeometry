@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>three.js webgl - geometry - terrain</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="surface_files/main.css">
+		<style>
+			body {
+				background-color: #bfd1e5;
+				color: #61443e;
+			}
+			a {
+				color: #a06851;
+			}
+		</style>
+	</head>
+
+
+    
+	<body data-new-gr-c-s-check-loaded="8.878.0" data-gr-ext-installed="">
+
+		<div id="container"><canvas style="display: block; width: 1920px; height: 968px; touch-action: none;" width="1920" height="968"></canvas><div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas style="width: 80px; height: 48px; display: block;" width="80" height="48"></canvas><canvas style="width: 80px; height: 48px; display: none;" width="80" height="48"></canvas></div></div>
+		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl terrain raycasting demo</div>
+
+		<script type="module">
+
+            // Find the latest version by visiting https://cdn.skypack.dev/three.
+          
+            import * as THREE from 'https://cdn.skypack.dev/three@0.130.1';
+
+            import Stats from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/libs/stats.module.js';
+
+            // import { NURBSCurve } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/curves/NURBSCurve.js';
+            // import { NURBSSurface } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/curves/NURBSSurface.js';
+
+                        
+            import { OrbitControls } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/controls/OrbitControls.js';
+
+            import { ImprovedNoise } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/math/ImprovedNoise.js';
+
+
+
+
+
+			// #THREE JS
+
+            
+
+			let container, stats;
+
+			let camera, controls, scene, renderer;
+
+			let mesh, texture;
+
+			const worldWidth = 1024, worldDepth = 1024,
+				worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+			let helper;
+
+			const raycaster = new THREE.Raycaster();
+			const pointer = new THREE.Vector2();
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.getElementById( 'container' );
+				container.innerHTML = '';
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xbfd1e5 );
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 10, 212000000 );
+
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 1000;
+				controls.maxDistance = 1000000000000000000;
+				controls.maxPolarAngle = Math.PI / 2;
+
+				//
+
+
+
+                //camera position
+				camera.position.y = controls.target.y + 8000;
+				camera.position.x = 6000;
+				controls.update();
+
+				// ADD SPHERE
+
+
+				const geometry = new THREE.SphereGeometry( 3000, 64, 64 );
+				const material = new THREE.MeshNormalMaterial( );
+
+				
+
+				const Vmaterial = new THREE.LineBasicMaterial( { color: 0x0000ff ,linewidth: 1000} );
+				mesh= new THREE.LineSegments( geometry, Vmaterial );
+
+
+				// scene.add( mesh );
+
+				
+
+
+
+				// const points = [];
+
+				// points.push( geometry);
+
+				var dotGeometry = geometry
+
+				var dotMaterial = new THREE.PointsMaterial( { size: 3, sizeAttenuation: false } );
+				var dot = new THREE.Points( dotGeometry, dotMaterial);
+
+
+
+
+				var vert1 = new THREE.Vector3().fromArray(dot.geometry.attributes.position.array,1267);
+				console.log(vert1);
+				scene.add( dot );
+
+				const points = [];
+				points.push( new THREE.Vector3( 0, 0, 0 ) );
+				points.push(vert1);
+
+				const fgeometry = new THREE.BufferGeometry().setFromPoints( points );
+				const line = new THREE.Line( fgeometry, Vmaterial );
+
+				
+				scene.add( line );
+
+
+
+
+				var geo = new THREE.PlaneBufferGeometry(12000, 12000, 100, 8);
+				var mat = new THREE.MeshBasicMaterial({ color: 0x91a681, side: THREE.DoubleSide });
+				var plane = new THREE.Mesh(geo, mat);
+				plane.rotateX( - Math.PI / 2); plane.translateZ ( -3000);
+
+
+				scene.add(plane);
+
+				// mesh = new THREE.Mesh( geometry, material );
+
+
+
+				
+                
+
+                const axesHelper = new THREE.AxesHelper( 5000 );
+                scene.add( axesHelper );
+
+				const geometryHelper = new THREE.ConeGeometry( 20, 100, 3 );
+				geometryHelper.translate( 0, 50, 0 );
+				geometryHelper.rotateX( Math.PI / 2 );
+				helper = new THREE.Mesh( geometryHelper, new THREE.MeshNormalMaterial() );
+				scene.add( helper );
+
+				// container.addEventListener( 'pointermove', onPointerMove );
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			
+
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+                mesh.rotation.y -= 0.00115;
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+
+		</script>
+
+	
+
+</body></html>
