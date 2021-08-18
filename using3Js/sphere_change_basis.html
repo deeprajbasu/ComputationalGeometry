@@ -7,7 +7,7 @@
 		<link type="text/css" rel="stylesheet" href="surface_files/main.css">
 		<style>
 			body {
-				background-color: #bfd1e5;
+				background-color: #0e1318;
 				color: #61443e;
 			}
 			a {
@@ -53,6 +53,9 @@
 
 			let mesh, texture;
 
+
+			// const group = new THREE.Group();
+
 			const worldWidth = 1024, worldDepth = 1024,
 				worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
 
@@ -75,7 +78,7 @@
 				container.appendChild( renderer.domElement );
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xbfd1e5 );
+				scene.background = new THREE.Color( 0x1f3233 );
 
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 10, 212000000 );
 
@@ -96,24 +99,24 @@
 				// ADD SPHERE
 
 
-				const geometry = new THREE.SphereGeometry( 3000, 64, 64 );
-				const material = new THREE.MeshNormalMaterial( );
+				const geometry = new THREE.SphereGeometry( 3000, 10, 20 );
+				const material = new THREE.LineBasicMaterial( { color: 0xa1081c ,linewidth: 1000} );
 
 				
 
-				const Vmaterial = new THREE.LineBasicMaterial( { color: 0x0000ff ,linewidth: 1000} );
-				mesh= new THREE.LineSegments( geometry, Vmaterial );
+				const Vmaterial = new THREE.LineBasicMaterial( { color: 0xd5f536,linewidth: 1000} );
+				mesh= new THREE.LineSegments( geometry, material );
 
 
-				// scene.add( mesh );
+				scene.add( mesh );
 
 				
 
 
 
-				// const points = [];
+				const points = [];
 
-				// points.push( geometry);
+				points.push( geometry);
 
 				var dotGeometry = geometry
 
@@ -122,28 +125,51 @@
 
 
 
+				// #DRAW VECTORS TO SPHERE POINTS
 
-				var vert1 = new THREE.Vector3().fromArray(dot.geometry.attributes.position.array,1267);
-				console.log(vert1);
-				scene.add( dot );
-
-				const points = [];
-				points.push( new THREE.Vector3( 0, 0, 0 ) );
-				points.push(vert1);
-
-				const fgeometry = new THREE.BufferGeometry().setFromPoints( points );
-				const line = new THREE.Line( fgeometry, Vmaterial );
 
 				
-				scene.add( line );
+
+				scene.add( dot );
+
+				var lines = [];
+				var len = dot.geometry.attributes.position.array.length
+				for (var i = 0;i<len-1;i++){
+					
+					const points = [];
+					var vert1 = new THREE.Vector3().fromArray(dot.geometry.attributes.position.array,i);
+					points.push( new THREE.Vector3( 0, 0, 0 ) );
+					points.push(vert1);
+					
+					if (vert1.length()>3100){
+						continue;
+					}
+
+
+					const fgeometry = new THREE.BufferGeometry().setFromPoints( points );
+					const line = new THREE.Line( fgeometry, Vmaterial  );
+					// line.material.color=new THREE.Float32BufferAttribute( line.material.colo+5);
+
+				
+				lines.push( line );
+				}
 
 
 
+				for (var i = 0;i<len-1;i++){
+
+				scene.add(lines[i]);
+				}
 
 				var geo = new THREE.PlaneBufferGeometry(12000, 12000, 100, 8);
-				var mat = new THREE.MeshBasicMaterial({ color: 0x91a681, side: THREE.DoubleSide });
+				var mat = new THREE.MeshBasicMaterial({ color: 0x555b66, side: THREE.DoubleSide });
 				var plane = new THREE.Mesh(geo, mat);
 				plane.rotateX( - Math.PI / 2); plane.translateZ ( -3000);
+
+				// group.add( mesh );
+				// group.add( dot );
+
+				// scene.add( group );
 
 
 				scene.add(plane);
@@ -193,7 +219,7 @@
 
 				requestAnimationFrame( animate );
 
-                mesh.rotation.y -= 0.00115;
+                mesh.rotation.y -= 0.02115;
 
 				render();
 				stats.update();
