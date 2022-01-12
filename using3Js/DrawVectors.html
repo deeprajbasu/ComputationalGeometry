@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>three.js webgl - geometry - terrain</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="surface_files/main.css">
+		<style>
+			body {
+				background-color: #0e1318;
+				color: #61443e;
+			}
+			a {
+				color: #a06851;
+			}
+		</style>
+	</head>
+
+
+    
+	<body data-new-gr-c-s-check-loaded="8.878.0" data-gr-ext-installed="">
+
+		<div id="container"><canvas style="display: block; width: 1920px; height: 968px; touch-action: none;" width="1920" height="968"></canvas><div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas style="width: 80px; height: 48px; display: block;" width="80" height="48"></canvas><canvas style="width: 80px; height: 48px; display: none;" width="80" height="48"></canvas></div></div>
+		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl terrain raycasting demo</div>
+
+		
+
+		<script type="module">
+
+            // Find the latest version by visiting https://cdn.skypack.dev/three.
+
+
+            import * as THREE from 'https://cdn.skypack.dev/three';
+
+            import Stats from 'https://cdn.skypack.dev/three/examples/jsm/libs/stats.module.js';
+
+                        
+            import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
+
+            import { ImprovedNoise } from 'https://cdn.skypack.dev/three/examples/jsm/math/ImprovedNoise.js';
+
+
+
+
+
+			// #THREE JS
+
+            
+
+			let container, stats;
+
+			let camera, controls, scene, renderer;
+
+			// let mesh, texture;
+
+
+			// const group = new THREE.Group();
+
+			const worldWidth = 1024, worldDepth = 1024,
+				worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+			let helper;
+
+			const raycaster = new THREE.Raycaster();
+			const pointer = new THREE.Vector2();
+
+			init();
+			animate();
+
+			
+
+			function init() {
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x1f3233 );
+
+
+
+				container = document.getElementById( 'container' );
+				container.innerHTML = '';
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 212000000 );
+
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 0.00001;
+				controls.maxDistance = 100000;
+		
+
+
+                //camera position
+				camera.position.y = controls.target.y + 18;
+				camera.position.x = 16;
+				controls.update();
+				
+
+
+
+
+				//ADDING XY PLANE 
+				const size = 5;
+				const divisions = 5;
+				const gridHelper = new THREE.GridHelper(50, 10, 0xffffff);
+				// gridHelper.rotateX(Math.PI / 2);
+                
+				
+				// gridGroup.add(gridHelper);
+
+
+
+                const axesHelper = new THREE.AxesHelper( 10 );
+
+
+
+				const gridGroup = new THREE.Group();
+				gridGroup.add(gridHelper, axesHelper);
+				scene.add(gridGroup);
+
+
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				window.addEventListener( 'resize', onWindowResize );
+
+
+				//DRAW VECTors
+
+				//create a blue LineBasicMaterial
+				const material = new THREE.LineBasicMaterial( { color: 0xbfff66,
+				linewidth:1000,
+				linecap: 'butt'
+				});
+
+				const points = [];
+				points.push( new THREE.Vector3( 10, 15, 2 ));
+				points.push( new THREE.Vector3( 1, 2, 15 ) );
+
+				for (let i = 0; i < points.length; i++) {
+					const a = []
+					a.push( new THREE.Vector3( 0, 0, 0 ));
+					a.push( points[i]);
+					const Vecs = new THREE.BufferGeometry().setFromPoints( a );
+					const line = new THREE.Line( Vecs, material );
+					scene.add( line );
+
+
+
+
+					
+					}
+
+				var dotGeometry = new THREE.BufferGeometry().
+				setFromPoints( points );
+
+				var dotMaterial = new THREE.PointsMaterial( { size: 10, sizeAttenuation: false } );
+				var dot = new THREE.Points( dotGeometry, dotMaterial );
+				scene.add( dot );
+			
+
+
+
+
+
+
+
+			}
+
+
+
+
+
+
+
+
+
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			
+
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+                // mesh.rotation.y -= 0.02115;
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+
+		</script>
+
+	
+
+</body></html>
