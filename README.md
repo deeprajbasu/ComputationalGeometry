@@ -4,7 +4,7 @@
 ## Vectors in three js 
 
 using three js to visualize linear algebra etc (WIP)
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/using3Js/vec3.gif" width="65%" align='left'>
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/using3Js/vec3.gif" width="35%" align='left'>
 
 
 
