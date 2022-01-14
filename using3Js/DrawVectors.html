@@ -39,6 +39,8 @@
 
             import { ImprovedNoise } from 'https://cdn.skypack.dev/three/examples/jsm/math/ImprovedNoise.js';
 
+			import { DragControls } from'https://cdn.skypack.dev/three/examples/jsm/controls/DragControls.js';
+
 
 
 
@@ -61,15 +63,17 @@
 
 			let helper;
 
-			const raycaster = new THREE.Raycaster();
-			const pointer = new THREE.Vector2();
+			const points = [];
+			points.push( new THREE.Vector3( 5, 5, 6 ));
+			// points.push( new THREE.Vector3( 1, 2, 15 ) );
 
-			init();
-			animate();
+			init(points);
+			animate(points);
 
 			
 
-			function init() {
+			function init(points) {
+
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0x1f3233 );
@@ -89,8 +93,6 @@
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 212000000 );
 
 				controls = new OrbitControls( camera, renderer.domElement );
-				controls.minDistance = 0.00001;
-				controls.maxDistance = 100000;
 		
 
 
@@ -127,41 +129,52 @@
 				stats = new Stats();
 				container.appendChild( stats.dom );
 
-				window.addEventListener( 'resize', onWindowResize );
+
 
 
 				//DRAW VECTors
 
-				//create a blue LineBasicMaterial
-				const material = new THREE.LineBasicMaterial( { color: 0xbfff66,
-				linewidth:1000,
-				linecap: 'butt'
-				});
-
-				const points = [];
-				points.push( new THREE.Vector3( 10, 15, 2 ));
-				points.push( new THREE.Vector3( 1, 2, 15 ) );
-
-				for (let i = 0; i < points.length; i++) {
-					const a = []
-					a.push( new THREE.Vector3( 0, 0, 0 ));
-					a.push( points[i]);
-					const Vecs = new THREE.BufferGeometry().setFromPoints( a );
-					const line = new THREE.Line( Vecs, material );
-					scene.add( line );
+				
+				// console.log()
+				var dotGeometry =  new THREE.ConeGeometry( 2, 2, 6 );
 
 
 
+				var dotMaterial =  new THREE.MeshNormalMaterial({side:THREE.DoubleSide});
 
-					
-					}
+				// dotGeometry.setAttribute( 'position', new THREE.BufferAttribute( points, 0 ) );
 
-				var dotGeometry = new THREE.BufferGeometry().
-				setFromPoints( points );
-
-				var dotMaterial = new THREE.PointsMaterial( { size: 10, sizeAttenuation: false } );
-				var dot = new THREE.Points( dotGeometry, dotMaterial );
+				var dot = new THREE.Mesh( dotGeometry, dotMaterial );
+				console.log(points[0].x,points[0].y,points[0].z)
+				dot.position.set(points[0].x,points[0].y,points[0].z);
+				dot.geometry.rotateX( Math.PI / 2 );
+				dot.geometry.scale(  1, 1, -1  );
+				dot.lookAt ( 0,0,0 )
 				scene.add( dot );
+				// dot.position.set(points[0])
+
+
+				var objects = [];
+
+
+				objects.push(dot);
+
+				const dragControls = new DragControls( objects, camera, renderer.domElement );
+
+
+				
+				dragControls.addEventListener( 'dragstart', function () { controls.enabled = false; 
+				
+				
+				} );
+
+				dragControls.addEventListener( 'drag', onDragEvent );
+				
+				dragControls.addEventListener( 'dragend', function () { controls.enabled = true; } );
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				window.addEventListener( 'mousemove', onMouseMove, false );
 			
 
 
@@ -196,9 +209,10 @@
 
 			//
 
-			function animate() {
+			function animate(points) {
 
 				requestAnimationFrame( animate );
+
 
                 // mesh.rotation.y -= 0.02115;
 
@@ -206,6 +220,64 @@
 				stats.update();
 
 			}
+
+			var mouse = new THREE.Vector2();
+
+			function onMouseMove(e) {
+			mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			}
+
+
+			// var TransFormBox =  new THREE.BoxGeometry(new THREE.Vector3(0, 1, 0), 0);
+
+
+
+			
+
+
+			function onDragEvent(e) {
+
+		
+			//remove previously drawn line 
+
+			var selectedObject = scene.getObjectByName("Current_line");
+    		scene.remove( selectedObject );
+
+
+
+
+			console.log(e.object.position)
+
+							const material = new THREE.LineBasicMaterial( { color: 0xbfff66,
+				linewidth:1000,
+				linecap: 'butt'
+				});
+
+				e.object.lookAt ( 0,0,0 ) 
+
+
+
+				for (let i = 0; i < points.length; i++) {
+					const a = []
+					a.push( new THREE.Vector3( 0, 0, 0 ));
+					a.push( e.object.position);
+					const Vecs = new THREE.BufferGeometry().setFromPoints( a );
+					const line = new THREE.Line( Vecs, material );
+
+
+					line.name = "Current_line";
+					
+					scene.add( line );
+
+
+
+
+					
+					}
+			}
+
+			
 
 			function render() {
 
