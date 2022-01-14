@@ -1,5 +1,13 @@
 ## ComputationalGeometry
 
+>LATEST : 
+## Vectors in three js 
+
+using three js to visualize linear algebra etc (WIP)
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/using3Js/vec3.gif" width="35%" align='left'>
+
+
+
 > ComputationalGeometry concepts exploring in unity
 
 ## 2 Field  of view- 
