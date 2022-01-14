@@ -1,9 +1,9 @@
 ## ComputationalGeometry
 
 >LATEST : 
-## Vectors in three js 
+## * Vectors in three js 
 
-using three js to visualize linear algebra etc (WIP)
+using three js to visualize linear algebra etc (WIP), drag and drop vectors 
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/using3Js/vec3.gif" width="35%" align='left'>
 
 
@@ -13,10 +13,10 @@ using three js to visualize linear algebra etc (WIP)
 ## 2 Field  of view- 
 
 using ray cast to determing if target objects fall in an agents field of view. view angle, view distance
-
+<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="50%" align='center'>
 <img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout1.gif" width="29%" align='right'>
 
-<img src="https://github.com/deeprajbasu/ComputationalGeometry/blob/main/field-Of-View/FOVout2.gif" width="50%" align='center'>
+
 
 
 
