@@ -63,12 +63,13 @@
 
 			let helper;
 
+			//ADDING VECTORS
 			const points = [];
-			points.push( new THREE.Vector3( 5, 5, 6 ));
-			// points.push( new THREE.Vector3( 1, 2, 15 ) );
-
+			points.push( new THREE.Vector3( 5, 15, 16 ));
+			points.push( new THREE.Vector3( 1, 2, 15 ) );
+			points.push( new THREE.Vector3( 10, 12, 5 ) );
 			init(points);
-			animate(points);
+			animate();
 
 			
 
@@ -90,7 +91,7 @@
 
 
 
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 212000000 );
+				camera = new THREE.PerspectiveCamera( 18, window.innerWidth / window.innerHeight, 0.1, 212000000 );
 
 				controls = new OrbitControls( camera, renderer.domElement );
 		
@@ -110,18 +111,17 @@
 				const divisions = 5;
 				const gridHelper = new THREE.GridHelper(50, 10, 0xffffff);
 				// gridHelper.rotateX(Math.PI / 2);
-                
+				const gridHelper2 = new THREE.GridHelper(50, 10, 0xffffff);
+				gridHelper2.rotateX(Math.PI / 2);
 				
 				// gridGroup.add(gridHelper);
 
 
 
-                const axesHelper = new THREE.AxesHelper( 10 );
-
 
 
 				const gridGroup = new THREE.Group();
-				gridGroup.add(gridHelper, axesHelper);
+				gridGroup.add(gridHelper,gridHelper2,);
 				scene.add(gridGroup);
 
 
@@ -134,30 +134,31 @@
 
 				//DRAW VECTors
 
-				
-				// console.log()
-				var dotGeometry =  new THREE.ConeGeometry( 2, 2, 6 );
-
-
-
+				var dotGeometry =  new THREE.BoxGeometry( 1, 1, 4 );
 				var dotMaterial =  new THREE.MeshNormalMaterial({side:THREE.DoubleSide});
 
-				// dotGeometry.setAttribute( 'position', new THREE.BufferAttribute( points, 0 ) );
+
+				//for loop for multiple cones
+				var objects = [];
+				for (let i = 0; i < points.length; i++) {
 
 				var dot = new THREE.Mesh( dotGeometry, dotMaterial );
-				console.log(points[0].x,points[0].y,points[0].z)
-				dot.position.set(points[0].x,points[0].y,points[0].z);
-				dot.geometry.rotateX( Math.PI / 2 );
-				dot.geometry.scale(  1, 1, -1  );
+				dot.name=i
+
+				dot.position.set(points[i].x,points[i].y,points[i].z);
+
 				dot.lookAt ( 0,0,0 )
 				scene.add( dot );
-				// dot.position.set(points[0])
-
-
-				var objects = [];
-
-
 				objects.push(dot);
+				}
+
+
+
+
+				
+
+
+				
 
 				const dragControls = new DragControls( objects, camera, renderer.domElement );
 
@@ -209,7 +210,7 @@
 
 			//
 
-			function animate(points) {
+			function animate() {
 
 				requestAnimationFrame( animate );
 
@@ -241,15 +242,15 @@
 		
 			//remove previously drawn line 
 
-			var selectedObject = scene.getObjectByName("Current_line");
-    		scene.remove( selectedObject );
+			// var selectedObject = scene.getObjectByName("Current_line",true);
+    		// scene.remove( selectedObject );
 
 
 
 
-			console.log(e.object.position)
+			console.log(e.object.name)
 
-							const material = new THREE.LineBasicMaterial( { color: 0xbfff66,
+							const material = new THREE.LineBasicMaterial( { color: 0xffc400,
 				linewidth:1000,
 				linecap: 'butt'
 				});
@@ -259,6 +260,8 @@
 
 
 				for (let i = 0; i < points.length; i++) {
+					var selectedObject = scene.getObjectByName("Current_line"+e.object.name,true);
+    		scene.remove( selectedObject );
 					const a = []
 					a.push( new THREE.Vector3( 0, 0, 0 ));
 					a.push( e.object.position);
@@ -266,7 +269,7 @@
 					const line = new THREE.Line( Vecs, material );
 
 
-					line.name = "Current_line";
+					line.name = "Current_line"+e.object.name;
 					
 					scene.add( line );
 
