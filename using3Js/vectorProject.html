@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>three.js webgl - geometry - terrain</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="surface_files/main.css">
+		<style>
+			body {
+				background-color: #0e1318;
+				color: #61443e;
+			}
+			a {
+				color: #a06851;
+			}
+		</style>
+	</head>
+
+
+    
+	<body data-new-gr-c-s-check-loaded="8.878.0" data-gr-ext-installed="">
+
+		<div id="container"><canvas style="display: block; width: 1920px; height: 968px; touch-action: none;" width="1920" height="968"></canvas><div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas style="width: 80px; height: 48px; display: block;" width="80" height="48"></canvas><canvas style="width: 80px; height: 48px; display: none;" width="80" height="48"></canvas></div></div>
+		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl terrain raycasting demo</div>
+
+		
+
+		<script type="module">
+
+            // Find the latest version by visiting https://cdn.skypack.dev/three.
+
+
+            import * as THREE from 'https://cdn.skypack.dev/three';
+
+            import Stats from 'https://cdn.skypack.dev/three/examples/jsm/libs/stats.module.js';
+
+			// import  * as math from  'https://unpkg.com/mathjs@10.0.2/lib/browser/math.js';
+
+                        
+            import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
+
+            import { ImprovedNoise } from 'https://cdn.skypack.dev/three/examples/jsm/math/ImprovedNoise.js';
+
+			import { DragControls } from'https://cdn.skypack.dev/three/examples/jsm/controls/DragControls.js';
+
+
+
+
+
+			// #THREE JS
+
+            
+
+			let container, stats;
+
+			let camera, controls, scene, renderer;
+
+			// let mesh, texture;
+
+
+			// const group = new THREE.Group();
+
+			const worldWidth = 1024, worldDepth = 1024,
+				worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+			let helper;
+
+			//ADDING VECTORS
+			const points = [];
+			points.push( new THREE.Vector3( 5, 15, 16 ));
+			points.push( new THREE.Vector3( 1, 2, 15 ) );
+
+			var other_vec = null
+			// points.push( new THREE.Vector3( 10, 12, 5 ) );
+			init(points);
+			animate();
+
+			
+
+			function init(points) {
+
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x1f3233 );
+
+
+
+				container = document.getElementById( 'container' );
+				container.innerHTML = '';
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+
+
+				camera = new THREE.PerspectiveCamera( 18, window.innerWidth / window.innerHeight, 0.1, 212000000 );
+
+				controls = new OrbitControls( camera, renderer.domElement );
+		
+
+
+                //camera position
+				camera.position.y = controls.target.y + 18;
+				camera.position.x = 16;
+				controls.update();
+				
+
+
+
+
+				//ADDING XY PLANE 
+				const size = 5;
+				const divisions = 5;
+				const gridHelper = new THREE.GridHelper(50, 10, 0xffffff);
+				// gridHelper.rotateX(Math.PI / 2);
+				const gridHelper2 = new THREE.GridHelper(50, 10, 0xffffff);
+				gridHelper2.rotateX(Math.PI / 2);
+				
+				// gridGroup.add(gridHelper);
+
+
+
+
+
+				const gridGroup = new THREE.Group();
+				gridGroup.add(gridHelper,gridHelper2,);
+				scene.add(gridGroup);
+
+
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+
+
+
+				//DRAW VECTors
+
+				var dotGeometry =  new THREE.BoxGeometry( 1, 1, 4 );
+				var dotMaterial =  new THREE.MeshNormalMaterial({side:THREE.DoubleSide});
+
+
+				//for loop for multiple cones
+				var objects = [];
+				for (let i = 0; i < points.length; i++) {
+
+				var dot = new THREE.Mesh( dotGeometry, dotMaterial );
+				dot.name=i
+
+				dot.position.set(points[i].x,points[i].y,points[i].z);
+
+				dot.lookAt ( 0,0,0 )
+				scene.add( dot );
+				objects.push(dot);
+				}
+
+
+
+
+				
+
+
+				
+
+				const dragControls = new DragControls( objects, camera, renderer.domElement );
+
+
+				
+				dragControls.addEventListener( 'dragstart', function () { controls.enabled = false; 
+				
+				
+				} );
+
+				dragControls.addEventListener( 'drag', onDragEvent );
+				
+				dragControls.addEventListener( 'dragend', function () { controls.enabled = true; } );
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				window.addEventListener( 'mousemove', onMouseMove, false );
+			
+
+
+
+
+
+
+
+			}
+
+
+
+
+
+
+
+
+
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			
+
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+
+                // mesh.rotation.y -= 0.02115;
+
+				render();
+				stats.update();
+
+			}
+
+			var mouse = new THREE.Vector2();
+
+			function onMouseMove(e) {
+			mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			}
+
+
+			// var TransFormBox =  new THREE.BoxGeometry(new THREE.Vector3(0, 1, 0), 0);
+
+
+
+			
+
+
+			function onDragEvent(e) {
+
+
+
+
+
+
+			// console.log(e)
+
+							const material = new THREE.LineBasicMaterial( { color: 0xffc400,
+				linewidth:1000,
+				linecap: 'butt'
+				});
+
+				e.object.lookAt ( 0,0,0 ) 
+
+
+
+				for (let i = 0; i < points.length; i++) {
+					var selectedObject = scene.getObjectByName("Current_line"+e.object.name,true);
+    		scene.remove( selectedObject );
+					const a = []
+					a.push( new THREE.Vector3( 0, 0, 0 ));
+					a.push( e.object.position);
+					const Vecs = new THREE.BufferGeometry().setFromPoints( a );
+					const line = new THREE.Line( Vecs, material );
+
+
+					line.name = "Current_line"+e.object.name;					
+					scene.add( line );
+					
+								
+					// console.log(e.object.name+"aaaa")
+
+
+					if (e.object.name!=null){
+					const current_vec = new THREE.Vector3(e.object.position.x, e.object.position.y, e.object.position.z );
+					points[e.object.name]=current_vec; 
+
+					//Calculate projection vector !! HACKY CODE
+					
+					for (let i = 0; i < points.length; i++) {
+						if (points[i]!=current_vec){
+							other_vec  =points[i]
+							console.log(other_vec)
+							break
+						}
+					}
+
+
+
+
+
+					if (other_vec){
+					const x = []
+
+					const scalar = other_vec.dot(current_vec)
+					x.push( current_vec);
+
+
+					x.push(other_vec.divideScalar (scalar ));
+					const xVecs = new THREE.BufferGeometry().setFromPoints( x );
+					const xmaterial = new THREE.LineBasicMaterial( { color: 0x12ffb8,
+				linewidth:1000,
+				linecap: 'butt'
+				});
+					const xline = new THREE.Line( xVecs, xmaterial );
+						
+						
+
+						console.log(scalar)
+
+
+					
+					scene.add( xline );}
+
+
+					}
+					}
+					}
+
+
+
+			
+
+			
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+
+		</script>
+
+	
+
+</body></html>
