@@ -138,7 +138,7 @@
 
 				//DRAW VECTors
 
-				var dotGeometry =  new THREE.BoxGeometry( 1, 1, 4 );
+				var dotGeometry =  new THREE.BoxGeometry( 1, 1, 1 );
 				var dotMaterial =  new THREE.MeshNormalMaterial({side:THREE.DoubleSide});
 
 
@@ -293,25 +293,29 @@
 
 
 
-
+					//Math of vec project
 					if (other_vec){
 					const x = []
 
-					const scalar = other_vec.dot(current_vec)
+					const scalar = current_vec.dot(other_vec)/other_vec.lengthSq ()
 					x.push( current_vec);
 
 
-					x.push(other_vec.divideScalar (scalar ));
+					x.push(other_vec.multiplyScalar (scalar ));
 					const xVecs = new THREE.BufferGeometry().setFromPoints( x );
-					const xmaterial = new THREE.LineBasicMaterial( { color: 0x12ffb8,
-				linewidth:1000,
-				linecap: 'butt'
+					const xmaterial = new THREE.LineDashedMaterial( { color: 0x12ffb8,
+						dashSize: 3,
 				});
 					const xline = new THREE.Line( xVecs, xmaterial );
+					xline.name = "projectionLine";
 						
 						
 
 						console.log(scalar)
+
+
+						var xselectedObject = scene.getObjectByName("projectionLine",true);
+    		scene.remove( xselectedObject );
 
 
 					
